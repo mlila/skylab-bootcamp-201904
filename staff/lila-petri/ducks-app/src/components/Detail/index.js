@@ -6,7 +6,6 @@ function Detail({ item: { title, image, description, price } }) {
         <img src={image} />
         <p>{description}</p>
         <span>{price}</span>
-        <span> favorite</span>
     </section>
 }
 

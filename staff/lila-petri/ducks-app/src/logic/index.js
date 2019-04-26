@@ -98,31 +98,49 @@ const logic = {
 
         return duckApi.retrieveDuck(id)
     },
-    toggleFavDuck(idDuck) {
+
+    toggleFavDuck(id) {
         validate.arguments([
-            { name: 'idDuck', value: idDuck, type: 'string' }
+            { name: 'id', value: id, type: 'string' }
         ])
+
         return userApi.retrieve(this.__userId__, this.__userToken__)
             .then(response => {
-                if (response.status === 'OK') {
-                    const { data } = response
-                    
-                    const favDucks = data.favDucks ? data.favDucks : []
-                    
-                    let index = favDucks.indexOf(idDuck)
-        
-                    if(index > -1) favDucks.splice(index, 1)
-                    else favDucks.push(id)  
+                const { status, data } = response
 
-                    return userApi.update(this.__userId__, this.__userToken__, { favDucks })
-                    .then(()=> {})
-                } else throw new LogicError(response.error)
+                if (status === 'OK') {
+                    const { favs = [] } = data // NOTE if data.favs === undefined then favs = []
+
+                    const index = favs.indexOf(id)
+
+                    if (index < 0) favs.push(id)
+                    else favs.splice(index, 1)
+
+                    return userApi.update(this.__userId__, this.__userToken__, { favs })
+                        .then(() => { })
+                }
+
+                throw new LogicError(response.error)
             })
-            
     },
 
     retrieveFavDucks() {
-        // TODO
+        return userApi.retrieve(this.__userId__, this.__userToken__)
+            .then(response => {
+                const { status, data } = response
+
+                if (status === 'OK') {
+                    const { favs = [] } = data
+
+                    if (favs.length) {
+                        const calls = favs.map(fav => duckApi.retrieveDuck(fav))
+
+                        return Promise.all(calls)
+                    } else return favs
+                }
+
+                throw new LogicError(response.error)
+            })
     }
 }
 
