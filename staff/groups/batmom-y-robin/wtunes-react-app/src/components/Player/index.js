@@ -1,10 +1,11 @@
 import React from 'react'
+import './index.sass'
 
 function Player({ url }) {
 
-    return <section>
+    return <div className="footer">
         <audio src={url} controls autoPlay/>
-    </section>
+    </div>
 }
 
 export default Player

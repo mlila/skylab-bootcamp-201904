@@ -5,6 +5,7 @@ import Player from '../Player'
 import Profile from '../Profile'
 import Preferences from '../Preferences'
 import logic from '../../logic'
+import './index.sass'
 
 class Home extends Component {
     state = {error: null, musicList: [], playerUrl: null}
@@ -37,7 +38,7 @@ class Home extends Component {
 
         {user && <Header city={user.city} preferences={user.preferences} onWeatherRetrieved={handleSearchMusic}/>}
         <Results items={musicList} onPlayer={handlePlayMusic}/>
-        {playerUrl && <Player url={playerUrl}/>}
+        {<Player url={playerUrl}/>}
         
         </main>
         </>

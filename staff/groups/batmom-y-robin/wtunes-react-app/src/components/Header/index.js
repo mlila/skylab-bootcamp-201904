@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import logic from '../../logic'
+import './index.sass'
 
 
 
@@ -29,8 +30,8 @@ class Header extends Component {
             hadleCityChange,
             state: {currentWeather, currentCity, error}
         } = this
-        return <>
-        <header>
+        return <div className="myHeader">
+        <div className="container">
         <select name="city" onChange={event => hadleCityChange(event.target.value)} defaultValue={currentCity}>
             <option value="Alaska">Alaska</option>
             <option value="Auckland">Auckland</option>
@@ -48,8 +49,8 @@ class Header extends Component {
         <h2>{currentCity}</h2>
         <h2>{currentWeather}</h2>
         <img src=""/>
-        </header>
-        </>
+        </div>
+        </div>
     }
 }
 
