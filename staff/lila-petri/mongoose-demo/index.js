@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     surname: String,
     email: {
         type: String,
-        required: [true, 'preferences is required'],
+        required: [true, 'email is required'],
         unique: [true, 'email has to be unique'],
         validate: {
             validator: email => {
@@ -18,11 +18,15 @@ const userSchema = new mongoose.Schema({
             },
             message: props => `${props.value} is not a valid email`
         }
+    },
+    password: {
+        type: String,
+        required: [true, 'password is required']
     }
 })
 return (async ()=>{
 
-    let Users = mongoose.model('Users', userSchema);
+    const Users = mongoose.model('Users', userSchema);
     await Users.create ({ name: 'Lila', surname: 'Petri', email: 'lila@lila.com' })
     try{
     const user= await Users.create({email:'mailgg@mail'})
@@ -30,5 +34,6 @@ return (async ()=>{
     }catch(error){
         console.log(error.message)
     }
+   await mongoose.disconnect
 })()
 
